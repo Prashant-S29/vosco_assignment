@@ -1,0 +1,9 @@
+# *
+User-agent: *
+Allow: /
+
+# Host
+Host: https://vosco-assignment-three.vercel.app
+
+# Sitemaps
+Sitemap: https://vosco-assignment-three.vercel.app/sitemap.xml
