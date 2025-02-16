@@ -16,7 +16,7 @@ export const SearchPropertyByCityCTA: React.FC = () => {
   const [city, setCity] = useState('');
 
   const handleSearch = () => {
-    console.log(city);
+    // console.log(city);
 
     if (city.trim() === '') {
       return;

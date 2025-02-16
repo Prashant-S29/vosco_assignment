@@ -1,5 +1,3 @@
-import type { Metadata } from 'next';
-
 // styles
 import '@/styles/globals.css';
 
@@ -10,15 +8,18 @@ import { font } from '@/public/font';
 import { Navbar } from '@/components/layout';
 import { Footer } from '@/components/layout';
 import Providers from '@/utils/provider';
+import { generateSeo } from '@/utils/generateSeo';
+import { Metadata } from 'next';
 
 // metadata
-export const metadata: Metadata = {
+export const metadata: Metadata = generateSeo({
   title: {
-    default: 'Vocso Assignment',
     template: '%s | Vocso Assignment',
+    default: 'Vocso Assignment',
   },
-  description: 'This is the solution for the assignment by Vocso',
-};
+  description: 'This is the solution for the assignment by Vocso`',
+  url: 'https://vocso-assignment-three.vercel.app',
+});
 
 export default function RootLayout({
   children,

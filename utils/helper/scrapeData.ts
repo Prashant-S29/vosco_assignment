@@ -30,7 +30,7 @@ export async function scrapeMagicBricks(htmlBlob: string): Promise<CityAPIRespon
       });
     });
 
-    console.log('properties from scrapeMagicBricks', properties);
+    // console.log('properties from scrapeMagicBricks', properties);
 
     return properties;
   } catch (error) {
