@@ -27,6 +27,9 @@ export async function POST(request: Request): Promise<NextResponse<GlobalRespons
 
     const d = await scrapeMagicBricks(htmlBlob);
 
+    console.log('d from /city/route.ts', d);
+    console.log('d.length from /city/route.ts', d.length);
+
     return NextResponse.json({
       data: d,
       message: 'Successfully processed city.',

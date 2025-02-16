@@ -22,6 +22,9 @@ export const useGetCityBySlug = (slug: string) => {
       }
 
       const data = await res.json();
+
+      console.log("data from api.city.ts", data);
+
       return data as GlobalResponseType<CityAPIResponseType[]>;
     },
   });
