@@ -17,6 +17,10 @@ export const useGetCityBySlug = (slug: string) => {
         body: JSON.stringify({ city: slug }),
       });
 
+      console.log("endpoint from api.city.ts", GetPropertyByCitySlug.endpoint);
+      console.log("body from api.city.ts", JSON.stringify({ city: slug }));
+      console.log("res from api.city.ts", res);
+
       if (!res.ok) {
         return null;
       }
