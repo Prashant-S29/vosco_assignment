@@ -10,6 +10,12 @@ const nextConfig: NextConfig = {
         port: '',
         pathname: '/photo-*',
       },
+      {
+        hostname: 'img.staticmb.com',
+        protocol: 'https',
+        port: '',
+        pathname: '**', // Allows any path
+      },
     ],
   },
 };
