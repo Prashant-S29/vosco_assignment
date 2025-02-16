@@ -22,10 +22,20 @@ export async function POST(request: Request): Promise<NextResponse<GlobalRespons
       );
     }
 
+    // console.log('city from /city/route.ts', city);
+
     const htmlBlobRes = await fetch(`${MAGIC_BRICKS_URL}${city}`);
+
+    // console.log('htmlBlobRes from /city/route.ts', htmlBlobRes);
+
     const htmlBlob = await htmlBlobRes.text();
 
+    // console.log('htmlBlob from /city/route.ts', htmlBlob);
+
     const d = await scrapeMagicBricks(htmlBlob);
+
+    // console.log('d from /city/route.ts', d);
+    // console.log('d.length from /city/route.ts', d.length);
 
     return NextResponse.json({
       data: d,

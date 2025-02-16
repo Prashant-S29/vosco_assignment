@@ -43,7 +43,7 @@ export const PropertyCard: React.FC<PropertyCardProps> = ({ data }) => {
         throw new Error('Failed to fetch geocode data');
       }
       const geoCodeRes: GeoResponse = await res.json();
-      console.log(geoCodeRes);
+      // console.log(geoCodeRes);
 
       addGeoCode({
         latitude: geoCodeRes.data[0].latitude,

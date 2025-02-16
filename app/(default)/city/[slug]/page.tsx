@@ -1,87 +1,24 @@
-'use client';
+import React from 'react';
+import { CityPageWithSlug } from './slugPage';
+import { generateSeo } from '@/utils/generateSeo';
+import { Metadata } from 'next';
 
-import React, { useEffect, useState } from 'react';
-import dynamic from 'next/dynamic';
-import { notFound, useParams } from 'next/navigation';
+type PageProps = {
+  params: Promise<{ slug: string }>;
+};
 
-// hooks
-import { useGetCityBySlug } from '@/utils/api/api.city';
-import { useMounted, useUserLocation } from '@/hooks';
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  return generateSeo({
+    title: `${(await params.then((p) => p.slug)).charAt(0).toUpperCase() + (await params.then((p) => p.slug)).slice(1)}`,
+    description: 'This is the solution for the assignment by Vocso',
+    url: `https://vocso-assignment-three.vercel.app/city/${await params.then((p) => p.slug)}`,
+  });
+}
 
-// components
-import { PropertyCard, PropertyCardLoader } from '@/components/common';
+const CityPage = async ({ params }: PageProps) => {
+  const { slug } = await params;
 
-const DynamicMapContainer = dynamic(() => import('react-leaflet').then((mod) => mod.MapContainer), { ssr: false });
-const DynamicPropertyGeoCodesMap = dynamic(
-  () => import('@/components/feature/PropertyGeoCodesMap').then((mod) => mod.PropertyGeoCodesMap),
-  { ssr: false },
-);
-
-const CityPage: React.FC = () => {
-  const mount = useMounted();
-  const params = useParams();
-  const slug = params?.slug as string;
-
-  if (!slug) notFound();
-
-  const { location } = useUserLocation();
-  const { data, isLoading } = useGetCityBySlug(slug);
-
-  // Fix: Prevent rendering on server side
-  const [isClient, setIsClient] = useState(false);
-  useEffect(() => {
-    setIsClient(typeof window !== 'undefined');
-  }, []);
-
-  if (!mount || !isClient) return null;
-
-  return (
-    <div data-container className="min-h-screen w-full bg-primary-foreground py-[100px]">
-      <section className="flex w-full items-center justify-between">
-        <h1 className="text-xl font-semibold leading-none">
-          <span className="text-primary/30">- Searching results for </span>
-          {slug.charAt(0).toUpperCase() + slug.slice(1)}
-        </h1>
-      </section>
-
-      {isLoading ? (
-        <div className="mt-5 grid w-full grid-cols-2 gap-2">
-          <PropertyCardLoader />
-          <PropertyCardLoader />
-          <PropertyCardLoader />
-        </div>
-      ) : (
-        <>
-          {/* Map Section */}
-          {data?.data && data.data.length > 0 ? (
-            <>
-              <DynamicMapContainer
-                key={1}
-                center={{
-                  lat: location?.latitude ?? 0,
-                  lng: location?.longitude ?? 0,
-                }}
-                zoom={10}
-                zoomAnimation
-                className="mt-5 h-[400px] w-full overflow-hidden rounded-xl"
-              >
-                <DynamicPropertyGeoCodesMap />
-              </DynamicMapContainer>
-
-              {/* Property List Section */}
-              <div className="mt-5 grid w-full grid-cols-2 gap-2">
-                {data.data.map((propertyData, index) => (
-                  <PropertyCard data={propertyData} key={index} />
-                ))}
-              </div>
-            </>
-          ) : (
-            <p>No results found</p>
-          )}
-        </>
-      )}
-    </div>
-  );
+  return <CityPageWithSlug slug={slug} />;
 };
 
 export default CityPage;

@@ -13,8 +13,8 @@ interface ScrollProgress {
  *
  * @example
  * const { x, y } = useScrollProgress(50);
- * console.log(`Horizontal Progress: ${x}%`);
- * console.log(`Vertical Progress: ${y}%`);
+ * // console.log(`Horizontal Progress: ${x}%`);
+ * // console.log(`Vertical Progress: ${y}%`);
  */
 const useScrollProgress = (throttleTime = 100): ScrollProgress => {
   const [progress, setProgress] = useState<ScrollProgress>({ x: 0, y: 0 });
