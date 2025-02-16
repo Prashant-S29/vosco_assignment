@@ -10,7 +10,6 @@ import { Button } from '@/components/ui/button';
 import { useMounted } from '@/hooks';
 import 'leaflet/dist/leaflet.css';
 
-
 const Map = dynamic(() => import('./Map').then((mod) => mod.Map), {
   ssr: false,
   loading: () => <p>Loading map...</p>,

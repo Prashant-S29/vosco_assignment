@@ -19,7 +19,7 @@ export const Navbar: React.FC = () => {
   return (
     <header
       data-container
-      className="fixed top-0 z-[999] flex w-full items-center justify-between border bg-primary-foreground py-4"
+      className="fixed top-0 z-[9999] flex w-full items-center justify-between border bg-primary-foreground py-4"
       style={{ borderColor: y > 10 ? 'hsl(var(--border))' : 'hsl(var(--background))' }}
     >
       <Link href="/" className="font-medium">

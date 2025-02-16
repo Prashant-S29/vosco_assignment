@@ -2,6 +2,8 @@
 
 import React from 'react';
 
+import 'leaflet/dist/leaflet.css';
+
 // hooks
 import { useMounted } from '@/hooks';
 import { useLocationStore } from '@/hooks/useLocationStore';

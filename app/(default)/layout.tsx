@@ -9,6 +9,7 @@ import { font } from '@/public/font';
 // components
 import { Navbar } from '@/components/layout';
 import { Footer } from '@/components/layout';
+import Providers from '@/utils/provider';
 
 // metadata
 export const metadata: Metadata = {
@@ -27,9 +28,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${font.montserrat.className} antialiased`}>
-        <Navbar />
-        {children}
-        <Footer />
+        <Providers>
+          <Navbar />
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

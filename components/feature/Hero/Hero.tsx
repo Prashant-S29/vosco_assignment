@@ -1,22 +1,14 @@
-'use client';
-import React, { useCallback, useState } from 'react';
+import React from 'react';
 import Image from 'next/image';
 
 // icons
 import { ArrowDownIcon, StarIcon } from '@/public/icons';
 
 // components
-import { AskForUserLocation } from '../AskForUserLocation';
 import { SearchPropertyByCityCTA } from '../SearchPropertyByCityCTA';
 import { HeroSearchPropertyCTA } from '../HeroSearchPropertyCTA';
 
 export const Hero: React.FC = () => {
-  // states
-  const [locationGranted, setLocationGranted] = useState(false);
-  const handleLocationChange = useCallback((granted: boolean) => {
-    setLocationGranted(granted);
-  }, []);
-
   return (
     <main data-container className="relative h-screen bg-primary-foreground pt-[150px]">
       <h1 className="text-[50px] font-semibold leading-tight">
@@ -59,8 +51,6 @@ export const Hero: React.FC = () => {
       <div data-container className="absolute bottom-5 left-0 w-full py-4">
         <HeroSearchPropertyCTA />
       </div>
-
-      {!locationGranted && <AskForUserLocation onLocationChange={handleLocationChange} />}
     </main>
   );
 };
