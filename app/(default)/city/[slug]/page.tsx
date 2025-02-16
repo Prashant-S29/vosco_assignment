@@ -12,20 +12,24 @@ import { useGetCityBySlug } from '@/utils/api/api.city';
 import { PropertyCard, PropertyCardLoader } from '@/components/common';
 import { PropertyGeoCodesMap } from '@/components/feature/PropertyGeoCodesMap';
 import { MapContainer } from 'react-leaflet';
-import { useUserLocation } from '@/hooks';
+import { useMounted, useUserLocation } from '@/hooks';
 
 const CityPage: React.FC = () => {
+
+  const mount = useMounted();
+  
   const params = useParams();
   const slug = params.slug as string;
-
+  
   if (!slug) {
     notFound();
   }
-
+  
   const { location } = useUserLocation();
-
   const { data, isLoading } = useGetCityBySlug(slug);
 
+  if (!mount) return null;
+  
   return (
     <div data-container className="min-h-screen w-full bg-primary-foreground py-[100px]">
       <section className="flex w-full items-center justify-between">
