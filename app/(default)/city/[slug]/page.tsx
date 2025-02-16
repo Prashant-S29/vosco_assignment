@@ -1,35 +1,40 @@
 'use client';
 
-import React from 'react';
-
-// get slug frm url
+import React, { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import { notFound, useParams } from 'next/navigation';
 
 // hooks
 import { useGetCityBySlug } from '@/utils/api/api.city';
+import { useMounted, useUserLocation } from '@/hooks';
 
 // components
 import { PropertyCard, PropertyCardLoader } from '@/components/common';
-import { PropertyGeoCodesMap } from '@/components/feature/PropertyGeoCodesMap';
-import { MapContainer } from 'react-leaflet';
-import { useMounted, useUserLocation } from '@/hooks';
+
+const DynamicMapContainer = dynamic(() => import('react-leaflet').then((mod) => mod.MapContainer), { ssr: false });
+const DynamicPropertyGeoCodesMap = dynamic(
+  () => import('@/components/feature/PropertyGeoCodesMap').then((mod) => mod.PropertyGeoCodesMap),
+  { ssr: false },
+);
 
 const CityPage: React.FC = () => {
-
   const mount = useMounted();
-  
   const params = useParams();
-  const slug = params.slug as string;
-  
-  if (!slug) {
-    notFound();
-  }
-  
+  const slug = params?.slug as string;
+
+  if (!slug) notFound();
+
   const { location } = useUserLocation();
   const { data, isLoading } = useGetCityBySlug(slug);
 
-  if (!mount) return null;
-  
+  // Fix: Prevent rendering on server side
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => {
+    setIsClient(typeof window !== 'undefined');
+  }, []);
+
+  if (!mount || !isClient) return null;
+
   return (
     <div data-container className="min-h-screen w-full bg-primary-foreground py-[100px]">
       <section className="flex w-full items-center justify-between">
@@ -38,6 +43,7 @@ const CityPage: React.FC = () => {
           {slug.charAt(0).toUpperCase() + slug.slice(1)}
         </h1>
       </section>
+
       {isLoading ? (
         <div className="mt-5 grid w-full grid-cols-2 gap-2">
           <PropertyCardLoader />
@@ -46,9 +52,10 @@ const CityPage: React.FC = () => {
         </div>
       ) : (
         <>
+          {/* Map Section */}
           {data?.data && data.data.length > 0 ? (
             <>
-              <MapContainer
+              <DynamicMapContainer
                 key={1}
                 center={{
                   lat: location?.latitude ?? 0,
@@ -56,10 +63,12 @@ const CityPage: React.FC = () => {
                 }}
                 zoom={10}
                 zoomAnimation
-                className="h-[400px] mt-5 rounded-xl overflow-hidden w-full"
+                className="mt-5 h-[400px] w-full overflow-hidden rounded-xl"
               >
-                <PropertyGeoCodesMap />
-              </MapContainer>
+                <DynamicPropertyGeoCodesMap />
+              </DynamicMapContainer>
+
+              {/* Property List Section */}
               <div className="mt-5 grid w-full grid-cols-2 gap-2">
                 {data.data.map((propertyData, index) => (
                   <PropertyCard data={propertyData} key={index} />

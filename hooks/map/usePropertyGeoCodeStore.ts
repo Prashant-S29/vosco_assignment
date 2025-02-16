@@ -12,7 +12,7 @@ interface GeoCodeState {
   removeGeoCode: (geoCode: GeoCode) => void;
 
   newPropertyLocation: GeoCode | null;
-updateNewPropertyLocation: (location: GeoCode) => void;
+  updateNewPropertyLocation: (location: GeoCode) => void;
 }
 
 export const usePropertyGeoCodeStore = create<GeoCodeState>((set) => ({
