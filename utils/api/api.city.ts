@@ -4,32 +4,43 @@ import { GlobalResponseType } from '@/types/api';
 import { GetPropertyByCitySlug } from '@/types/api/city';
 import { CityAPIResponseType } from '@/types/api/city/req_res.types';
 import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
 export const useGetCityBySlug = (slug: string) => {
   return useQuery({
     queryKey: ['city', slug],
     queryFn: async () => {
-      const res = await fetch(GetPropertyByCitySlug.endpoint, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      const res = await axios.post<{
+        data: CityAPIResponseType[];
+      }>(
+        GetPropertyByCitySlug.endpoint,
+        {
+          city: slug,
         },
-        body: JSON.stringify({ city: slug }),
-      });
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        },
+      );
 
-      console.log("endpoint from api.city.ts", GetPropertyByCitySlug.endpoint);
-      console.log("body from api.city.ts", JSON.stringify({ city: slug }));
-      console.log("res from api.city.ts", res);
+      console.log('endpoint from api.city.ts', GetPropertyByCitySlug.endpoint);
+      console.log('body from api.city.ts', JSON.stringify({ city: slug }));
+      console.log('res from api.city.ts', res);
 
-      if (!res.ok) {
-        return null;
-      }
+      // if (res.data.data.length === 0) {
+      //   return {
+      //     data: null,
+      //     message: 'No results found',
+      //     error: null,
+      //   } as GlobalResponseType<null>;
+      // }
 
-      const data = await res.json();
-
-      console.log("data from api.city.ts", data);
-
-      return data as GlobalResponseType<CityAPIResponseType[]>;
+      return {
+        data: res.data.data,
+        message: 'success',
+        error: null,
+      } as GlobalResponseType<CityAPIResponseType[]>;
     },
   });
 };
